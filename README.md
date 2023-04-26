@@ -1,5 +1,40 @@
 
 
+@Component("beanA")
+public class BeanA {
+    private BeanB beanB;
+
+    @Autowired
+    public BeanA(@Qualifier("beanB") BeanB beanB) {
+        this.beanB = beanB;
+    }
+    // rest of the class implementation
+}
+
+@Component("beanB")
+public class BeanB {
+    private BeanA beanA;
+
+    @Autowired
+    public BeanB(@Qualifier("beanA") BeanA beanA) {
+        this.beanA = beanA;
+    }
+    // rest of the class implementation
+}
+
+@Configuration
+public class AppConfig {
+    @Bean("beanA")
+    public BeanA beanA(BeanB beanB) {
+        return new BeanA(beanB);
+    }
+
+    @Bean("beanB")
+    public BeanB beanB(BeanA beanA) {
+        return new BeanB(beanA);
+    }
+}
+
 
 
 import java.io.BufferedWriter;
